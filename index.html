@@ -2457,6 +2457,30 @@ times(() => {
                 </div>
             </div>
 
+            <div class="item-card filterJS" data-name="User Country">
+                <button class="item-name">
+                    <div class="name-wrapper">
+                        <img src="assets/icons/js.png" alt="javascript" height="14" class="item-name-icon"> 
+                        <span class="name-span">User Country</span>
+                    </div> 
+                </button>
+                <div class="item-content">
+                    <div class="code-panel js">
+                        <pre>
+                            <code>
+fetch('https://api.ipregistry.co/?key=tryout')
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (payload) {
+        console.log(payload.location.country.name + ', ' + payload.location.city);
+    });
+                            </code>
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
             <div class="item-card filterJS" data-name="Winners Widget">
                 <button class="item-name">
                     <div class="name-wrapper">
