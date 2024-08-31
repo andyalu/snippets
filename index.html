@@ -1730,6 +1730,240 @@ const toNextPage = () => {
                 </div>
             </div>
             
+            <div class="item-card filterJS" data-name="Pagination & Filtering">
+                <button class="item-name">
+                    <div class="name-wrapper">
+                        <img src="assets/icons/js.png" alt="javascript" height="14" class="item-name-icon"> 
+                        <span class="name-span">Pagination & Filtering</span>
+                    </div> 
+                </button>
+                <div class="item-content">
+                    <div class="code-panel html">
+                        <pre>
+                            <code>
+&lt;div class="container"&gt;
+    &lt;div class="categories-row flex center mt-2" id="filterCategories"&gt;
+        &lt;div class="chip is-active" data-filter="all"&gt;
+            Всі вакансіЇ
+        &lt;/div&gt;
+        &lt;div class="chip" data-filter="media_buyer"&gt;
+            media buyer
+        &lt;/div&gt;
+        &lt;div class="chip" data-filter="team_lead"&gt;
+            Team lead 
+        &lt;/div&gt;
+        &lt;div class="chip" data-filter="affiliate_manager"&gt;
+            Affiliate manager
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;br&gt;
+    &lt;div class="cards-wrapper mt-3"&gt;
+        &lt;div class="roles-list"&gt;
+            &lt;a href="./roles-item.html" class="roles-list-card" data-filter="media_buyer"&gt;
+                media_buyer
+            &lt;/a&gt;
+            &lt;a href="./roles-item.html" class="roles-list-card" data-filter="affiliate_manager"&gt;
+                affiliate_manager
+            &lt;/a&gt;
+            &lt;a href="./roles-item.html" class="roles-list-card" data-filter="media_buyer"&gt;
+                media_buyer
+            &lt;/a&gt;
+            &lt;a href="./roles-item.html" class="roles-list-card" data-filter="media_buyer"&gt;
+                media_buyer
+            &lt;/a&gt;
+            &lt;a href="./roles-item.html" class="roles-list-card" data-filter="affiliate_manager"&gt;
+                affiliate_manager
+            &lt;/a&gt;
+            &lt;a href="./roles-item.html" class="roles-list-card" data-filter="media_buyer"&gt;
+                media_buyer
+            &lt;/a&gt;
+            &lt;a href="./roles-item.html" class="roles-list-card" data-filter="team_lead"&gt;
+                team_lead
+            &lt;/a&gt;
+            &lt;a href="./roles-item.html" class="roles-list-card" data-filter="media_buyer"&gt;
+                media_buyer
+            &lt;/a&gt;
+            &lt;a href="./roles-item.html" class="roles-list-card" data-filter="affiliate_manager"&gt;
+                affiliate_manager
+            &lt;/a&gt;
+            &lt;a href="./roles-item.html" class="roles-list-card" data-filter="media_buyer"&gt;
+                media_buyer
+            &lt;/a&gt;
+            &lt;a href="./roles-item.html" class="roles-list-card" data-filter="media_buyer"&gt;
+                media_buyer
+            &lt;/a&gt;
+        &lt;/div&gt;
+        &lt;br&gt;
+        &lt;div class="pagination mt-3 flex center just-center" id="rolesPaginationControl"&gt;
+            &lt;div class="flex center just-center"&gt;
+                &lt;button class="pagination-btn btn-prev" id="prevPage"&gt;Prev&lt;/button&gt;
+                &lt;button class="pagination-btn btn-next" id="nextPage"&gt;Next&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;p class="section-text mt-05 text-center text-accent" id="rolesPaginationCount"&gt;
+            &lt;span class="filtered-roles-quantity"&gt;5&lt;/span&gt;/&lt;span class="roles-quantity"&gt;32&lt;/span&gt; вакансії
+        &lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+                            </code>
+                        </pre>
+                    </div>
+                    <div class="code-panel css">
+                        <pre>
+                            <code>
+.roles-list-card {
+    display: none;
+}
+.roles-list-card.is-active {
+    display: block;
+}
+                            </code>
+                        </pre>
+                    </div>
+                    <div class="code-panel js">
+                        <pre>
+                            <code>
+document.addEventListener('DOMContentLoaded', function () {
+    const categoryChips = document.querySelectorAll('.chip[data-filter]');
+    const rolesListCards = document.querySelectorAll('.roles-list-card');
+    const itemsPerPage = 5;
+
+    let currentPage = 0;
+    let isCategoryChosen = false;
+    let categoryFilter = '';
+
+    rolesListCards.forEach(item => {
+        item.classList.add('is-active');
+    });
+
+    function setPaginationCount(itemsOnPage, itemsQty) {
+        document.querySelectorAll(".roles-quantity").forEach(
+            (el) => (el.innerText = itemsQty)
+        );
+        document.querySelectorAll(".filtered-roles-quantity").forEach(
+            (el) => (el.innerText = itemsOnPage)
+        );
+    }
+
+    categoryChips.forEach(chip => {
+        chip.addEventListener('click', function () {
+            const filter = this.getAttribute('data-filter');
+            categoryFilter = filter;
+            const filteredItems = document.querySelectorAll(`.roles-list-card[data-filter="${filter}"]`);
+
+            currentPage = 0;
+            isCategoryChosen = true;
+
+            // Hide all items
+            rolesListCards.forEach(item => {
+                item.classList.remove('is-active');
+            });
+
+            // Show filtered items
+            filteredItems.forEach(item => {
+                item.classList.add('is-active');
+            });
+            
+            let itemsOnPage = itemsPerPage;
+
+            // Show items of all categories
+            if (filter === "all") {
+                isCategoryChosen = false;
+                showItems(currentPage, rolesListCards);
+                if (itemsOnPage > rolesListCards.length) {
+                    itemsOnPage = rolesListCards.length;
+                }
+                setPaginationCount(itemsOnPage, rolesListCards.length);
+            } else {
+                isCategoryChosen = true;
+                showItems(currentPage, filteredItems);
+                if (itemsOnPage > filteredItems.length) {
+                    itemsOnPage = filteredItems.length;
+                }
+                setPaginationCount(itemsOnPage, filteredItems.length);
+            }
+        });
+    });
+
+    // Pagination
+    const filteredRoles = document.querySelectorAll('.roles-list-card.is-active');
+    const prevButton = document.querySelector('#prevPage');
+    const nextButton = document.querySelector('#nextPage');
+
+    function showItems(page, arrayToPaginate) {
+        const startIndex = page * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+
+        arrayToPaginate.forEach((item, index) => {
+            if (index >= startIndex && index < endIndex) {
+                item.classList.add('is-active');
+            } else {
+                item.classList.remove('is-active');
+            }
+        });
+    }
+
+    if (prevButton || nextButton) {
+        prevButton.addEventListener('click', function () {
+            if (!isCategoryChosen) {
+                switchToPrevPage(rolesListCards);
+            } else {
+                const cardsFilteredByCategory = document.querySelectorAll(`.roles-list-card[data-filter="${categoryFilter}"]`);
+                switchToPrevPage(cardsFilteredByCategory);
+            }
+        });
+
+        nextButton.addEventListener('click', function () {
+            if (!isCategoryChosen) {
+                switchToNextPage(rolesListCards);
+            } else {
+                const cardsFilteredByCategory = document.querySelectorAll(`.roles-list-card[data-filter="${categoryFilter}"]`);
+                switchToNextPage(cardsFilteredByCategory);
+            }
+        });
+    }
+
+    // Switch to Previous Page function
+    function switchToPrevPage(arrayToSwitch) {
+        if (currentPage > 0) {
+            currentPage--;
+            showItems(currentPage, arrayToSwitch);
+            let currentItems = itemsPerPage * (currentPage + 1);
+            if (currentItems > arrayToSwitch.length) {
+                currentItems = Number(document.querySelectorAll('.roles-list-card.is-active').length) + itemsPerPage * currentPage;
+            }
+            setPaginationCount(currentItems, arrayToSwitch.length);
+        }
+    }
+
+    // Switch to Next Page function
+    function switchToNextPage(arrayToSwitch) {
+        const totalItems = arrayToSwitch.length;
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+        if (currentPage < totalPages - 1) {
+            currentPage++;
+            showItems(currentPage, arrayToSwitch);
+            let currentItems = itemsPerPage * (currentPage + 1);
+            if (currentItems > arrayToSwitch.length) {
+                currentItems = Number(document.querySelectorAll('.roles-list-card.is-active').length) + itemsPerPage * currentPage;
+            }
+            setPaginationCount(currentItems, arrayToSwitch.length);
+        }
+    }
+
+    // Initial display
+    showItems(currentPage, filteredRoles);
+    
+    // Initial Pagination Count
+    setPaginationCount(itemsPerPage, filteredRoles.length);
+});
+                            </code>
+                        </pre>
+                    </div>
+                </div>
+            </div>
+            
             <div class="item-card filterJS" data-name="Parallax Effect">
                 <button class="item-name">
                     <div class="name-wrapper">
