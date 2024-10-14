@@ -890,6 +890,47 @@ function checkSecond(sec) {
                 </div>
             </div>
 
+            <div class="item-card filterJS" data-name="COUNTDOWN SETTABLE">
+                <button class="item-name">
+                    <div class="name-wrapper">
+                        <img src="assets/icons/js.png" alt="javascript" height="14" class="item-name-icon"> 
+                        <span class="name-span">COUNTDOWN SETTABLE</span> 
+                    </div>
+                </button>
+                <div class="item-content">
+                    <div class="code-panel js">
+                        <pre>
+                            <code>
+function startCountdown(minutes) {
+    const now = new Date().getTime();
+    const countdownTime = now + minutes * 60000;
+
+    const interval = setInterval(() => {
+        const currentTime = new Date().getTime();
+        const remainingTime = countdownTime - currentTime;
+
+        const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+        document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+        document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+
+        if (remainingTime < 0) {
+        clearInterval(interval);
+        document.getElementById('minutes').textContent = '00';
+        document.getElementById('seconds').textContent = '00';
+        }
+    }, 1000);
+}
+
+// Example: Start a 5-minute 
+startCountdown(5);
+                            </code>
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
             <div class="item-card filterJS" data-name="COUNTDOWN TO THE END OF AN HOUR">
                 <button class="item-name">
                     <div class="name-wrapper">
